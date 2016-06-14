@@ -19,7 +19,7 @@ class homeViewController: UIViewController,UIImagePickerControllerDelegate, UINa
     let picker = UIImagePickerController()
     var databaseRef: FIRDatabaseReference!
     var storageRef: FIRStorageReference!
-    var tapDidChangePhoto: UIImage!
+    
     
     @IBAction func tapDidLogOut(sender: AnyObject) {
     try!FIRAuth.auth()!.signOut()
