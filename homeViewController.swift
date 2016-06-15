@@ -7,8 +7,6 @@
 //
 
 import Firebase
-import FirebaseDatabase
-import FirebaseStorage
 import Photos
 
 

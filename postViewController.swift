@@ -62,8 +62,13 @@ class postViewController: UIViewController , UIImagePickerControllerDelegate, UI
     }
 
     @IBAction func tapDidSentPost(sender: AnyObject){
-    let postText = self.postTextFiled.text
-    let finalpostText = postText!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        // set up timestamp
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd, H:mm:ss"
+        let defaultTimeZoneStr = formatter.stringFromDate(NSDate())
+        // set up post text
+        let postText = self.postTextFiled.text
+        let finalpostText = postText!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
         if postText!.characters.count>50 {
             self.errorAlert("Opps!", message: "username must less than 50 characters!")
         }else{
@@ -79,10 +84,10 @@ class postViewController: UIViewController , UIImagePickerControllerDelegate, UI
                     print(error.localizedDescription)
                     return
                 }else{
-            //storage downURL
-            let downLoadURL = metaData!.downloadURL()!.absoluteString
-            //store downloadURL at database
-            self.DatabaseRef.child("posts").childByAutoId().updateChildValues(["postPhoto": downLoadURL,"postText": postText!,"User":FIRAuth.auth()!.currentUser!.uid])
+                    //storage downURL
+                    let downLoadURL = metaData!.downloadURL()!.absoluteString
+                    //store downloadURL at database
+                    self.DatabaseRef.child("posts").childByAutoId().updateChildValues(["postPhoto": downLoadURL,"postText": postText!,"User":FIRAuth.auth()!.currentUser!.uid, "time":defaultTimeZoneStr] )
                     dispatch_async(dispatch_get_main_queue(), {()-> Void in
                         let viewController: UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MainNavigation")
                         self.presentViewController(viewController, animated: true, completion: nil)

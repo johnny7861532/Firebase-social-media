@@ -7,89 +7,81 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseStorage
 
 class timelineTableViewController: UITableViewController {
-
+    var posts = [FIRDataSnapshot!]()
+    var databaseRef: FIRDatabaseReference!
+    var storageRef: FIRStorageReference!
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    // MARK: - Table view data source
+        databaseRef = FIRDatabase.database().reference()
+        storageRef = FIRStorage.storage().reference()
+        self.tableView.reloadData()
+        
+            }
+    
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return 1
+        
     }
-
-    /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
-
-        // Configure the cell...
-
+        let cellIdentifier = "postCell"
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)as! timelineTableViewCell
+        
+        let userNameRef = self.databaseRef.child("users/\(FIRAuth.auth()!.currentUser!.uid)/username")
+        let userPhotoRef = self.databaseRef.child("users/\(FIRAuth.auth()!.currentUser!.uid)/userPhoto")
+        let userPostRef = self.databaseRef.child("posts")
+        
+        userPhotoRef.observeSingleEventOfType(.Value , withBlock: { (snapshot) in
+            
+            
+            let url = snapshot.value as! String
+            
+            
+            FIRStorage.storage().referenceForURL(url).dataWithMaxSize(10 * 1024 * 1024, completion: { (data, error) in
+                
+                
+                let userPhoto = UIImage(data: data!)
+                cell.userPhoto.image = userPhoto
+                cell.userPhoto.layer.cornerRadius = cell.userPhoto.frame.size.height/2
+                cell.userPhoto.clipsToBounds = true
+                
+                
+                
+            })
+        })
+        userNameRef.observeSingleEventOfType(.Value, withBlock:{ (snapshot) in
+            let userName = snapshot.value as! String
+            cell.usernameLabel.text = userName
+            
+        })
+        userPostRef.observeEventType(.ChildAdded, withBlock: {(snapshot) in
+            let postText = snapshot.value?["postText"]as! String
+            let url = snapshot.value?["postPhoto"] as! String
+            let time = snapshot.value!["time"] as! String
+            cell.postText.text = postText
+            cell.timeLabel.text = time
+            FIRStorage.storage().referenceForURL(url).dataWithMaxSize(10 * 1024 * 1024, completion: { (data, error) in
+                let postPhoto = UIImage(data: data!)
+                cell.postPhoto.image = postPhoto
+                
+            })
+            
+        })
+        
+        
+        
+        
         return cell
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
 }
