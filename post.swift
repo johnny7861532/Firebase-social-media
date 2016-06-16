@@ -7,18 +7,18 @@
 //
 import UIKit
 import Foundation
-class Post: NSObject{
+class Post{
     var username: String?
     var postText: String?
-    var time: NSData?
+    var time: String?
     var userPhoto: UIImage?
     var postPhoto: UIImage?
-    init(username: String?, postText:String?,time: NSData?, userPhoto:UIImage?, postPhoto: UIImage) {
-        self.username = username
-        self.postText = postText
-        self.time = NSData()
-        self.userPhoto = userPhoto
-        self.postPhoto = postPhoto
+    init(data: NSDictionary) {
+       username = data["username"] as? String
+       postText = data["postText"] as? String
+        time = data["time"]as? String
+        userPhoto = data["userPhoto"] as? UIImage
+        postPhoto = data["postPhoto"] as? UIImage
     }
     
     }

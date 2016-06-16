@@ -11,16 +11,15 @@ import Firebase
 import FirebaseStorage
 
 class timelineTableViewController: UITableViewController {
-    var posts = [FIRDataSnapshot!]()
+    var posts = [Post]()
     var databaseRef: FIRDatabaseReference!
     var storageRef: FIRStorageReference!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         databaseRef = FIRDatabase.database().reference()
         storageRef = FIRStorage.storage().reference()
-        self.tableView.reloadData()
-        
-            }
+    }
     
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -30,7 +29,7 @@ class timelineTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 1
+        return 4
         
     }
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -54,10 +53,7 @@ class timelineTableViewController: UITableViewController {
                 cell.userPhoto.image = userPhoto
                 cell.userPhoto.layer.cornerRadius = cell.userPhoto.frame.size.height/2
                 cell.userPhoto.clipsToBounds = true
-                
-                
-                
-            })
+                })
         })
         userNameRef.observeSingleEventOfType(.Value, withBlock:{ (snapshot) in
             let userName = snapshot.value as! String
@@ -65,23 +61,25 @@ class timelineTableViewController: UITableViewController {
             
         })
         userPostRef.observeEventType(.ChildAdded, withBlock: {(snapshot) in
-            let postText = snapshot.value?["postText"]as! String
-            let url = snapshot.value?["postPhoto"] as! String
-            let time = snapshot.value!["time"] as! String
-            cell.postText.text = postText
-            cell.timeLabel.text = time
+            if let postAdd  = snapshot.value as? NSDictionary{
+                let myPost = Post(data: postAdd)
+                self.posts.append(myPost)
+                
+                cell.postText.text = self.posts[indexPath.row].postText
+                cell.timeLabel.text = self.posts[indexPath.row].time
+                let url = snapshot.value?["postPhoto"] as! String
+                
             FIRStorage.storage().referenceForURL(url).dataWithMaxSize(10 * 1024 * 1024, completion: { (data, error) in
                 let postPhoto = UIImage(data: data!)
-                cell.postPhoto.image = postPhoto
+              cell.postPhoto.image = postPhoto
+              
                 
+
             })
-            
+            }
         })
         
-        
-        
-        
-        return cell
-    }
+            return cell
+        }
     
-}
+        }

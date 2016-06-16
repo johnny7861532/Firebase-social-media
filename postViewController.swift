@@ -13,7 +13,7 @@ import FirebaseStorage
 import Photos
 
 class postViewController: UIViewController , UIImagePickerControllerDelegate, UINavigationControllerDelegate{
-
+    
     @IBOutlet weak var postTextFiled: UITextField!
     @IBOutlet weak var postImage: UIImageView!
     var DatabaseRef: FIRDatabaseReference!
@@ -86,17 +86,18 @@ class postViewController: UIViewController , UIImagePickerControllerDelegate, UI
                 }else{
                     //storage downURL
                     let downLoadURL = metaData!.downloadURL()!.absoluteString
+                    let post = ["\(key)":["postPhoto": downLoadURL,"postText": postText!,"User":FIRAuth.auth()!.currentUser!.uid, "time":defaultTimeZoneStr] ]
                     //store downloadURL at database
-                    self.DatabaseRef.child("posts").childByAutoId().updateChildValues(["postPhoto": downLoadURL,"postText": postText!,"User":FIRAuth.auth()!.currentUser!.uid, "time":defaultTimeZoneStr] )
+                    self.DatabaseRef.child("posts").updateChildValues(post)
                     dispatch_async(dispatch_get_main_queue(), {()-> Void in
                         let viewController: UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MainNavigation")
                         self.presentViewController(viewController, animated: true, completion: nil)
                     })
-
-            
-            
-            }
-
+                    
+                    
+                    
+                }
+                
         
     }
     

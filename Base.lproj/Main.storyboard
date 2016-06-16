@@ -455,13 +455,16 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="clock" translatesAutoresizingMaskIntoConstraints="NO" id="N7I-rQ-8IZ">
-                                            <rect key="frame" x="477" y="8" width="22" height="22"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d4O-f4-1bA">
+                                            <rect key="frame" x="496" y="11" width="96" height="15"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="22" id="I0K-vD-rIr"/>
+                                                <constraint firstAttribute="width" constant="96" id="oU0-XW-2si"/>
                                             </constraints>
-                                        </imageView>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="1jE-i3-eFI">
+                                            <fontDescription key="fontDescription" type="system" pointSize="8"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1jE-i3-eFI">
                                             <rect key="frame" x="107" y="0.0" width="362" height="91"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
@@ -471,29 +474,29 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d4O-f4-1bA">
-                                            <rect key="frame" x="507" y="11" width="85" height="15"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="clock" translatesAutoresizingMaskIntoConstraints="NO" id="N7I-rQ-8IZ">
+                                            <rect key="frame" x="466" y="8" width="22" height="22"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="22" id="I0K-vD-rIr"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="O4P-9c-oWm" firstAttribute="leading" secondItem="yPf-sQ-0Jl" secondAttribute="leadingMargin" constant="14" id="0Zl-mM-e0d"/>
                                         <constraint firstItem="K1b-FU-ugf" firstAttribute="leading" secondItem="yPf-sQ-0Jl" secondAttribute="leading" id="1a9-2b-RG3"/>
-                                        <constraint firstItem="d4O-f4-1bA" firstAttribute="leading" secondItem="N7I-rQ-8IZ" secondAttribute="trailing" constant="8" symbolic="YES" id="3Ec-gv-o0L"/>
                                         <constraint firstItem="K1b-FU-ugf" firstAttribute="top" secondItem="Beo-gM-k0e" secondAttribute="bottom" constant="2" id="5tI-NS-pEh"/>
-                                        <constraint firstItem="d4O-f4-1bA" firstAttribute="trailing" secondItem="yPf-sQ-0Jl" secondAttribute="trailingMargin" id="8Vt-kU-ZLS"/>
-                                        <constraint firstItem="d4O-f4-1bA" firstAttribute="centerY" secondItem="N7I-rQ-8IZ" secondAttribute="centerY" id="9sZ-Ob-u2g"/>
                                         <constraint firstItem="N7I-rQ-8IZ" firstAttribute="leading" secondItem="1jE-i3-eFI" secondAttribute="trailing" constant="8" symbolic="YES" id="JYN-rB-pqL"/>
                                         <constraint firstAttribute="trailing" secondItem="K1b-FU-ugf" secondAttribute="trailing" id="MZv-I8-f18"/>
+                                        <constraint firstItem="d4O-f4-1bA" firstAttribute="top" secondItem="yPf-sQ-0Jl" secondAttribute="topMargin" constant="3" id="Ndk-my-ivy"/>
                                         <constraint firstItem="1jE-i3-eFI" firstAttribute="leading" secondItem="O4P-9c-oWm" secondAttribute="trailing" constant="19" id="Owy-jv-Slp"/>
+                                        <constraint firstItem="d4O-f4-1bA" firstAttribute="trailing" secondItem="yPf-sQ-0Jl" secondAttribute="trailingMargin" id="b9j-b1-EjM"/>
                                         <constraint firstItem="Beo-gM-k0e" firstAttribute="leading" secondItem="O4P-9c-oWm" secondAttribute="leading" id="chy-JI-RSE"/>
                                         <constraint firstAttribute="bottom" secondItem="K1b-FU-ugf" secondAttribute="bottom" id="eTL-v2-XKV"/>
-                                        <constraint firstItem="d4O-f4-1bA" firstAttribute="top" secondItem="yPf-sQ-0Jl" secondAttribute="topMargin" constant="3" id="l9F-NK-gbm"/>
+                                        <constraint firstItem="d4O-f4-1bA" firstAttribute="centerY" secondItem="N7I-rQ-8IZ" secondAttribute="centerY" id="iFt-dP-WLz"/>
                                         <constraint firstItem="N7I-rQ-8IZ" firstAttribute="top" secondItem="O4P-9c-oWm" secondAttribute="top" id="lke-a1-xaA"/>
                                         <constraint firstItem="O4P-9c-oWm" firstAttribute="top" secondItem="yPf-sQ-0Jl" secondAttribute="topMargin" id="mSa-Mb-Ohv"/>
                                         <constraint firstItem="Beo-gM-k0e" firstAttribute="top" secondItem="O4P-9c-oWm" secondAttribute="bottom" constant="2" id="qK1-A4-TEK"/>
+                                        <constraint firstItem="d4O-f4-1bA" firstAttribute="leading" secondItem="N7I-rQ-8IZ" secondAttribute="trailing" constant="8" symbolic="YES" id="r2L-NC-v5P"/>
                                         <constraint firstItem="1jE-i3-eFI" firstAttribute="top" secondItem="yPf-sQ-0Jl" secondAttribute="top" id="txa-Ma-mkz"/>
                                         <constraint firstItem="K1b-FU-ugf" firstAttribute="top" secondItem="1jE-i3-eFI" secondAttribute="bottom" constant="8" symbolic="YES" id="wd4-RW-QVW"/>
                                     </constraints>
