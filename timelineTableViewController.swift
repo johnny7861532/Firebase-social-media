@@ -19,6 +19,7 @@ class timelineTableViewController: UITableViewController {
         super.viewDidLoad()
         databaseRef = FIRDatabase.database().reference()
         storageRef = FIRStorage.storage().reference()
+        
     }
     
 
@@ -29,50 +30,35 @@ class timelineTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 4
+        return 2
+        
         
     }
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cellIdentifier = "postCell"
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)as! timelineTableViewCell
         
-        let userNameRef = self.databaseRef.child("users/\(FIRAuth.auth()!.currentUser!.uid)/username")
-        let userPhotoRef = self.databaseRef.child("users/\(FIRAuth.auth()!.currentUser!.uid)/userPhoto")
         let userPostRef = self.databaseRef.child("posts")
-        
-        userPhotoRef.observeSingleEventOfType(.Value , withBlock: { (snapshot) in
-            
-            
-            let url = snapshot.value as! String
-            
-            
-            FIRStorage.storage().referenceForURL(url).dataWithMaxSize(10 * 1024 * 1024, completion: { (data, error) in
-                
-                
-                let userPhoto = UIImage(data: data!)
-                cell.userPhoto.image = userPhoto
-                cell.userPhoto.layer.cornerRadius = cell.userPhoto.frame.size.height/2
-                cell.userPhoto.clipsToBounds = true
-                })
-        })
-        userNameRef.observeSingleEventOfType(.Value, withBlock:{ (snapshot) in
-            let userName = snapshot.value as! String
-            cell.usernameLabel.text = userName
-            
-        })
         userPostRef.observeEventType(.ChildAdded, withBlock: {(snapshot) in
             if let postAdd  = snapshot.value as? NSDictionary{
                 let myPost = Post(data: postAdd)
                 self.posts.append(myPost)
-                
+                cell.usernameLabel.text = self.posts[indexPath.row].username
                 cell.postText.text = self.posts[indexPath.row].postText
                 cell.timeLabel.text = self.posts[indexPath.row].time
                 let url = snapshot.value?["postPhoto"] as! String
-                
-            FIRStorage.storage().referenceForURL(url).dataWithMaxSize(10 * 1024 * 1024, completion: { (data, error) in
-                let postPhoto = UIImage(data: data!)
-              cell.postPhoto.image = postPhoto
-              
+                let userPhotoUrl = snapshot.value?["userPhoto"] as! String
+                FIRStorage.storage().referenceForURL(url).dataWithMaxSize(10 * 1024 * 1024, completion: { (data, error) in
+                    let postPhoto = UIImage(data: data!)
+                    
+                    cell.postPhoto.image = postPhoto
+                    
+                    FIRStorage.storage().referenceForURL(userPhotoUrl).dataWithMaxSize(10 * 1024 * 1024, completion: { (data, error) in
+                        let userPhoto = UIImage(data: data!)
+                        cell.userPhoto.image = userPhoto
+                    })
+                    
+                    
                 
 
             })

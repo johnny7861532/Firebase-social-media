@@ -66,16 +66,29 @@ class postViewController: UIViewController , UIImagePickerControllerDelegate, UI
         let formatter = NSDateFormatter()
         formatter.dateFormat = "yyyy/MM/dd, H:mm:ss"
         let defaultTimeZoneStr = formatter.stringFromDate(NSDate())
+        // set up userpprofile
+        let userNameRef = self.DatabaseRef.child("users/\(FIRAuth.auth()!.currentUser!.uid)/username")
+        let userPhotoRef = self.DatabaseRef.child("users/\(FIRAuth.auth()!.currentUser!.uid)/userPhoto")
+        userNameRef.observeSingleEventOfType(.Value, withBlock: {(snapShot) in
+        let username = snapShot.value as! String
+        
+        
+        userPhotoRef.observeSingleEventOfType(.Value, withBlock: {(snapShot)in
+        let userPhotoUrl = snapShot.value as! String
+        
+       
+     
         // set up post text
+        
         let postText = self.postTextFiled.text
         let finalpostText = postText!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
         if postText!.characters.count>50 {
             self.errorAlert("Opps!", message: "username must less than 50 characters!")
         }else{
             var data = NSData()
-            data = UIImageJPEGRepresentation(postImage.image!, 0.8)!
+            data = UIImageJPEGRepresentation(self.postImage.image!, 0.8)!
             // set upload path
-            let key = DatabaseRef.child("posts").childByAutoId().key
+            let key = self.DatabaseRef.child("posts").childByAutoId().key
             let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\("posts")/\(key)"
             let metaData = FIRStorageMetadata()
             metaData.contentType = "image/jpg"
@@ -86,7 +99,7 @@ class postViewController: UIViewController , UIImagePickerControllerDelegate, UI
                 }else{
                     //storage downURL
                     let downLoadURL = metaData!.downloadURL()!.absoluteString
-                    let post = ["\(key)":["postPhoto": downLoadURL,"postText": postText!,"User":FIRAuth.auth()!.currentUser!.uid, "time":defaultTimeZoneStr] ]
+                    let post = ["\(key)":["username": username, "userPhoto": userPhotoUrl, "postPhoto": downLoadURL,"postText": postText!,"User":FIRAuth.auth()!.currentUser!.uid, "time":defaultTimeZoneStr] ]
                     //store downloadURL at database
                     self.DatabaseRef.child("posts").updateChildValues(post)
                     dispatch_async(dispatch_get_main_queue(), {()-> Void in
@@ -94,12 +107,12 @@ class postViewController: UIViewController , UIImagePickerControllerDelegate, UI
                         self.presentViewController(viewController, animated: true, completion: nil)
                     })
                     
-                    
-                    
+                }
+            }
                 }
                 
         
-    }
+    })
     
     /*
     // MARK: - Navigation
@@ -110,6 +123,6 @@ class postViewController: UIViewController , UIImagePickerControllerDelegate, UI
         // Pass the selected object to the new view controller.
     }
     */
-        }
+        })
 }
 }
