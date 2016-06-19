@@ -59,7 +59,9 @@ class signUpViewContorller: UIViewController {
         }
         else {
         // set spinner
-            let spinner: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRectMake(0,0,80,80))as UIActivityIndicatorView
+            let spinner: UIActivityIndicatorView = UIActivityIndicatorView()as UIActivityIndicatorView
+            spinner.activityIndicatorViewStyle = .WhiteLarge
+            spinner.center = view.center
             self.view.addSubview(spinner)
             spinner.startAnimating()
            FIRAuth.auth()?.createUserWithEmail(email!, password: password!){(user,error) in

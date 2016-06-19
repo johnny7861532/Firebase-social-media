@@ -30,7 +30,7 @@ class timelineTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 2
+        return 4
         
         
     }
@@ -39,23 +39,34 @@ class timelineTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)as! timelineTableViewCell
         
         let userPostRef = self.databaseRef.child("posts")
-        userPostRef.observeEventType(.ChildAdded, withBlock: {(snapshot) in
+        userPostRef.queryOrderedByChild("time").observeEventType(.ChildAdded, withBlock: {(snapshot) in
             if let postAdd  = snapshot.value as? NSDictionary{
                 let myPost = Post(data: postAdd)
-                self.posts.append(myPost)
-                cell.usernameLabel.text = self.posts[indexPath.row].username
-                cell.postText.text = self.posts[indexPath.row].postText
-                cell.timeLabel.text = self.posts[indexPath.row].time
+                self.posts.insert(myPost, atIndex: 0)
+                
+                //Dispatch the main thread here
+                dispatch_async(dispatch_get_main_queue()) {
+                    cell.usernameLabel.text = self.posts[indexPath.row].username
+                    cell.postText.text = self.posts[indexPath.row].postText
+                    cell.timeLabel.text = self.posts[indexPath.row].time
+                    
+                }
                 let url = snapshot.value?["postPhoto"] as! String
                 let userPhotoUrl = snapshot.value?["userPhoto"] as! String
+
+            
                 FIRStorage.storage().referenceForURL(url).dataWithMaxSize(10 * 1024 * 1024, completion: { (data, error) in
-                    let postPhoto = UIImage(data: data!)
-                    
-                    cell.postPhoto.image = postPhoto
-                    
+                    dispatch_async(dispatch_get_main_queue()) {
+                        let postPhoto = UIImage(data: data!)
+                        cell.postPhoto.image = postPhoto
+                    }
+
                     FIRStorage.storage().referenceForURL(userPhotoUrl).dataWithMaxSize(10 * 1024 * 1024, completion: { (data, error) in
-                        let userPhoto = UIImage(data: data!)
-                        cell.userPhoto.image = userPhoto
+                        dispatch_async(dispatch_get_main_queue()) {
+                            let userPhoto = UIImage(data: data!)
+                            cell.userPhoto.image = userPhoto
+                        }
+                       
                     })
                     
                     
