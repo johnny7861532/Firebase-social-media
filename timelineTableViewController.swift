@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FirebaseStorage
 
+
 class timelineTableViewController: UITableViewController {
     var posts = [Post]()
     var databaseRef: FIRDatabaseReference!
@@ -19,10 +20,35 @@ class timelineTableViewController: UITableViewController {
         super.viewDidLoad()
         databaseRef = FIRDatabase.database().reference()
         storageRef = FIRStorage.storage().reference()
-        
-    }
-    
+        let userPostRef = self.databaseRef.child("posts")
+        userPostRef.queryOrderedByChild("time").observeEventType(.ChildAdded, withBlock: {(snapshot) in
+            if let postAdd  = snapshot.value as? NSDictionary{
+                
+                let url = snapshot.value?["postPhoto"] as! String
+                let userPhotoUrl = snapshot.value?["userPhoto"] as! String
+                let myPost = Post(data: postAdd)
+                 dispatch_async(dispatch_get_main_queue()) {
+                FIRStorage.storage().referenceForURL(url).dataWithMaxSize(10 * 1024 * 1024, completion: { (data, error) in
+                    let postPhoto = UIImage(data: data!, scale: 1.0)!
+                    
+                    
+                                        })
+                FIRStorage.storage().referenceForURL(userPhotoUrl).dataWithMaxSize(10 * 1024 * 1024, completion: { (data, error) in
+                    let userPhoto = UIImage(data: data!, scale: 1.0)!
+                    
+                                    })
+                }
+                self.posts.insert(myPost, atIndex: 0)
+                self.tableView.reloadData()
+                
+            }
+            
 
+        
+        
+    })
+    
+    }
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -30,53 +56,26 @@ class timelineTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 4
+        return posts.count
         
         
     }
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cellIdentifier = "postCell"
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)as! timelineTableViewCell
+        //Dispatch the main thread here
         
-        let userPostRef = self.databaseRef.child("posts")
-        userPostRef.queryOrderedByChild("time").observeEventType(.ChildAdded, withBlock: {(snapshot) in
-            if let postAdd  = snapshot.value as? NSDictionary{
-                let myPost = Post(data: postAdd)
-                self.posts.insert(myPost, atIndex: 0)
-                
-                //Dispatch the main thread here
-                dispatch_async(dispatch_get_main_queue()) {
-                    cell.usernameLabel.text = self.posts[indexPath.row].username
-                    cell.postText.text = self.posts[indexPath.row].postText
-                    cell.timeLabel.text = self.posts[indexPath.row].time
-                    
-                }
-                let url = snapshot.value?["postPhoto"] as! String
-                let userPhotoUrl = snapshot.value?["userPhoto"] as! String
-
-            
-                FIRStorage.storage().referenceForURL(url).dataWithMaxSize(10 * 1024 * 1024, completion: { (data, error) in
-                    dispatch_async(dispatch_get_main_queue()) {
-                        let postPhoto = UIImage(data: data!)
-                        cell.postPhoto.image = postPhoto
-                    }
-
-                    FIRStorage.storage().referenceForURL(userPhotoUrl).dataWithMaxSize(10 * 1024 * 1024, completion: { (data, error) in
-                        dispatch_async(dispatch_get_main_queue()) {
-                            let userPhoto = UIImage(data: data!)
-                            cell.userPhoto.image = userPhoto
-                        }
-                       
-                    })
-                    
-                    
-                
-
-            })
-            }
-        })
-        
-            return cell
-        }
     
+        dispatch_async(dispatch_get_main_queue()) {
+            cell.usernameLabel.text = self.posts[indexPath.row].username
+            cell.postText.text = self.posts[indexPath.row].postText
+            cell.timeLabel.text = self.posts[indexPath.row].time
+            cell.postPhoto.image = self.posts[indexPath.row].postPhoto
+            cell.userPhoto.image = self.posts[indexPath.row].userPhoto
+            
+            
         }
+        return cell
+    
+}
+}

@@ -7,7 +7,7 @@
 //
 import UIKit
 import Foundation
-class Post {
+struct  Post {
     var username: String?
     var postText: String?
     var time: String?

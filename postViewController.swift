@@ -12,6 +12,7 @@ import FirebaseDatabase
 import FirebaseStorage
 import Photos
 
+
 class postViewController: UIViewController , UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
     @IBOutlet weak var postTextFiled: UITextField!
@@ -85,6 +86,11 @@ class postViewController: UIViewController , UIImagePickerControllerDelegate, UI
         if postText!.characters.count>50 {
             self.errorAlert("Opps!", message: "username must less than 50 characters!")
         }else{
+            let spinner: UIActivityIndicatorView = UIActivityIndicatorView() as UIActivityIndicatorView
+            spinner.activityIndicatorViewStyle = .WhiteLarge
+            spinner.center = self.view.center
+            self.view.addSubview(spinner)
+            spinner.startAnimating()
             var data = NSData()
             data = UIImageJPEGRepresentation(self.postImage.image!, 0.8)!
             // set upload path
@@ -102,6 +108,7 @@ class postViewController: UIViewController , UIImagePickerControllerDelegate, UI
                     let post = ["\(key)":["username": username, "userPhoto": userPhotoUrl, "postPhoto": downLoadURL,"postText": postText!,"User":FIRAuth.auth()!.currentUser!.uid, "time":defaultTimeZoneStr] ]
                     //store downloadURL at database
                     self.DatabaseRef.child("posts").updateChildValues(post)
+                     spinner.stopAnimating()
                     dispatch_async(dispatch_get_main_queue(), {()-> Void in
                         let viewController: UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MainNavigation")
                         self.presentViewController(viewController, animated: true, completion: nil)

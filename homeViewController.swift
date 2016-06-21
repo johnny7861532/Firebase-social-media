@@ -44,36 +44,30 @@ class homeViewController: UIViewController,UIImagePickerControllerDelegate, UINa
             
             
         let userID = FIRAuth.auth()?.currentUser?.uid
-         databaseRef.child("users").child(userID!).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
-                // Get user value
+        
+        self.databaseRef.child("users").child(userID!).observeEventType(.Value, withBlock: { (snapshot) in
+            // Get user value
+            dispatch_async(dispatch_get_main_queue()){
                 let username = snapshot.value!["username"] as! String
-                
                 self.userNameLabel.text = username
-                
-                
-            })
-            //get photo back
-            
-         databaseRef.child("users").child(userID!).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 // check if user has photo
                 if snapshot.hasChild("userPhoto"){
                     // set image locatin
                     let filePath = "\(userID!)/\("userPhoto")"
                     // Assuming a < 10MB file, though you can change that
                     self.storageRef.child(filePath).dataWithMaxSize(10*1024*1024, completion: { (data, error) in
-                        
-                        let userPhoto = UIImage(data: data!)
-                        self.userPhoto.image = userPhoto
+                    let userPhoto = UIImage(data: data!)
+                    self.userPhoto.image = userPhoto
                     })
-                }
-            })
-            
         }
-
-         }
+        
+        }
+        
+        })
+        }
+    }
     
     
-      
     override func viewWillAppear(animated: Bool) {
                }
 
