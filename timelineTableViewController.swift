@@ -68,14 +68,15 @@ class timelineTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)as! timelineTableViewCell
         //Dispatch the main thread here
         
-        
+        dispatch_async(dispatch_get_main_queue(), {() -> Void in
+
         cell.usernameLabel.text = self.posts[indexPath.row].username
         cell.postText.text = self.posts[indexPath.row].postText
         cell.timeLabel.text = self.posts[indexPath.row].time
         cell.postPhoto.image = self.posts[indexPath.row].postPhoto
         cell.userPhoto.image = self.posts[indexPath.row].userPhoto
         
-        
+        })
         
         return cell
         
