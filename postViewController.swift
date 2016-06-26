@@ -13,6 +13,7 @@ import FirebaseStorage
 import Photos
 
 
+
 class postViewController: UIViewController , UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
     @IBOutlet weak var postTextFiled: UITextField!
@@ -63,6 +64,7 @@ class postViewController: UIViewController , UIImagePickerControllerDelegate, UI
     }
 
     @IBAction func tapDidSentPost(sender: AnyObject){
+        FIRAnalytics.logEventWithName("Userpost", parameters:nil)
         // set up timestamp
         let formatter = NSDateFormatter()
         formatter.dateFormat = "yyyy/MM/dd, H:mm:ss"

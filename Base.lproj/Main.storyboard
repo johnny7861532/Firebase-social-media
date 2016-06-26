@@ -4,6 +4,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Reset Password View Controller-->
@@ -606,48 +607,79 @@
                                 <rect key="frame" x="0.0" y="397" width="600" height="154"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="154" id="E0O-EX-tMf"/>
+                                    <constraint firstAttribute="height" constant="154" id="gH0-lf-qNJ"/>
                                 </constraints>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="sgQ-Ua-ptp">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MapCell" id="sgQ-Ua-ptp" userLabel="MapCell" customClass="mapViewTableViewCell" customModule="Firebase_test2" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sgQ-Ua-ptp" id="Ps5-bg-djN">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hvi-ku-iOx">
+                                                    <rect key="frame" x="13" y="7" width="579" height="29"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hDX-8D-wHi">
+                                                            <rect key="frame" x="0.0" y="0.0" width="263" height="29"/>
+                                                            <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="14"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gLt-C1-VVt">
+                                                            <rect key="frame" x="263" y="0.0" width="263" height="29"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DBr-bg-ky0">
+                                                            <rect key="frame" x="526" y="0.0" width="53" height="29"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="7"/>
+                                                            <state key="normal" title="Go!"/>
+                                                        </button>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="DBr-bg-ky0" firstAttribute="width" secondItem="gLt-C1-VVt" secondAttribute="width" multiplier="0.2" id="f5C-0v-tmd"/>
+                                                        <constraint firstItem="hDX-8D-wHi" firstAttribute="width" secondItem="gLt-C1-VVt" secondAttribute="width" id="w21-cT-N5N"/>
+                                                    </constraints>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Hvi-ku-iOx" firstAttribute="top" secondItem="Ps5-bg-djN" secondAttribute="topMargin" constant="-1" id="2Yn-Yv-2sz"/>
+                                                <constraint firstItem="Hvi-ku-iOx" firstAttribute="centerY" secondItem="Ps5-bg-djN" secondAttribute="centerY" id="7CN-sZ-twY"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Hvi-ku-iOx" secondAttribute="bottom" constant="-1" id="csY-km-crj"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Hvi-ku-iOx" secondAttribute="trailing" id="m3o-hf-ctC"/>
+                                                <constraint firstItem="Hvi-ku-iOx" firstAttribute="leading" secondItem="Ps5-bg-djN" secondAttribute="leadingMargin" constant="5" id="zHQ-jB-SiP"/>
+                                            </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="location" destination="gLt-C1-VVt" id="Mzw-Ro-8p4"/>
+                                            <outlet property="title" destination="hDX-8D-wHi" id="PPi-6W-Uhn"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
-                            </tableView>
-                            <searchBar alpha="0.59999999999999998" contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="bfD-XT-rhZ">
-                                <rect key="frame" x="0.0" y="15" width="600" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="DO3-hw-iAd"/>
-                                </constraints>
-                                <textInputTraits key="textInputTraits"/>
                                 <connections>
-                                    <outlet property="delegate" destination="mO5-O0-Uqr" id="R8L-9p-BaS"/>
+                                    <outlet property="dataSource" destination="mO5-O0-Uqr" id="eto-bq-kKM"/>
+                                    <outlet property="delegate" destination="mO5-O0-Uqr" id="tUl-2R-Afa"/>
                                 </connections>
-                            </searchBar>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="bfD-XT-rhZ" secondAttribute="trailing" id="5ri-gN-a8v"/>
-                            <constraint firstItem="bfD-XT-rhZ" firstAttribute="trailing" secondItem="pKZ-ex-wbU" secondAttribute="trailing" id="7Sv-Kq-i2T"/>
-                            <constraint firstItem="bfD-XT-rhZ" firstAttribute="leading" secondItem="opK-3G-QsK" secondAttribute="leading" id="8ov-4k-O8V"/>
-                            <constraint firstItem="pKZ-ex-wbU" firstAttribute="trailing" secondItem="opK-3G-QsK" secondAttribute="trailing" id="bCq-dZ-4qK"/>
+                            <constraint firstItem="opK-3G-QsK" firstAttribute="leading" secondItem="pKZ-ex-wbU" secondAttribute="leading" id="Wq9-Ea-82N"/>
                             <constraint firstItem="pKZ-ex-wbU" firstAttribute="top" secondItem="muy-Rt-Lc2" secondAttribute="top" id="ehX-EO-ZCF"/>
-                            <constraint firstItem="bfD-XT-rhZ" firstAttribute="leading" secondItem="pKZ-ex-wbU" secondAttribute="leading" id="lbp-o9-L13"/>
-                            <constraint firstItem="opK-3G-QsK" firstAttribute="bottom" secondItem="Mft-Mx-4t1" secondAttribute="top" id="mDa-Ou-kvp"/>
-                            <constraint firstItem="opK-3G-QsK" firstAttribute="top" secondItem="pKZ-ex-wbU" secondAttribute="bottom" id="pU3-2D-irD"/>
-                            <constraint firstItem="bfD-XT-rhZ" firstAttribute="leading" secondItem="muy-Rt-Lc2" secondAttribute="leading" id="xyZ-mX-Eik"/>
-                            <constraint firstItem="bfD-XT-rhZ" firstAttribute="top" secondItem="muy-Rt-Lc2" secondAttribute="topMargin" constant="15" id="yYS-Rd-DjM"/>
+                            <constraint firstItem="opK-3G-QsK" firstAttribute="bottom" secondItem="Mft-Mx-4t1" secondAttribute="top" id="l3S-1H-sOH"/>
+                            <constraint firstAttribute="trailing" secondItem="opK-3G-QsK" secondAttribute="trailing" id="mSh-OF-l6K"/>
+                            <constraint firstItem="opK-3G-QsK" firstAttribute="leading" secondItem="muy-Rt-Lc2" secondAttribute="leading" id="pvc-li-nT6"/>
+                            <constraint firstItem="opK-3G-QsK" firstAttribute="trailing" secondItem="pKZ-ex-wbU" secondAttribute="trailing" id="qi0-B4-aAw"/>
+                            <constraint firstItem="opK-3G-QsK" firstAttribute="top" secondItem="pKZ-ex-wbU" secondAttribute="bottom" id="svG-4z-Tgy"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="map" id="W9D-V4-3QF">
                         <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="-5"/>
                     </tabBarItem>
                     <connections>
+                        <outlet property="mapTableView" destination="opK-3G-QsK" id="Bic-Ai-Ji9"/>
                         <outlet property="mapView" destination="pKZ-ex-wbU" id="fHm-58-TRE"/>
                         <outlet property="searchDisplayController" destination="XSn-4A-B7C" id="yVx-wD-Z2F"/>
                     </connections>
@@ -656,14 +688,13 @@
                 <searchDisplayController id="XSn-4A-B7C">
                     <connections>
                         <outlet property="delegate" destination="mO5-O0-Uqr" id="qeF-Ad-JDq"/>
-                        <outlet property="searchBar" destination="bfD-XT-rhZ" id="nXK-5B-NmI"/>
                         <outlet property="searchContentsController" destination="mO5-O0-Uqr" id="NYb-2l-Kug"/>
                         <outlet property="searchResultsDataSource" destination="mO5-O0-Uqr" id="YSI-Tm-WAB"/>
                         <outlet property="searchResultsDelegate" destination="mO5-O0-Uqr" id="O1m-pJ-pxL"/>
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="2067" y="-274"/>
+            <point key="canvasLocation" x="2016" y="-128"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="oE2-iT-jwr">

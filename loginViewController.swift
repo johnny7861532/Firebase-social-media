@@ -9,10 +9,11 @@
 import UIKit
 import Firebase
 
+
 class loginViewController: UIViewController {
    
     @IBOutlet weak var passWordField: UITextField!
-   
+    
     @IBOutlet weak var emailField: UITextField!
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
@@ -28,17 +29,19 @@ class loginViewController: UIViewController {
         presentViewController(alert, animated: true, completion: nil)
         
     }
-
+    
     @IBAction func tapDidLogin(sender: AnyObject) {
+        //Observe UserLogin
+        FIRAnalytics.logEventWithName(kFIREventLogin, parameters: nil)
         var email = self.emailField.text
         var password = self.passWordField.text
         email = email!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
         password = password!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
         if email!.characters.count<8{
-        self.errorAlert("Opps!", message: "please type vaild email!")
+            self.errorAlert("Opps!", message: "please type vaild email!")
         } else if password!.characters.count<8{
-        self.errorAlert("Opps!", message: "Please type vaild password!")
-        
+            self.errorAlert("Opps!", message: "Please type vaild password!")
+            
         } else{
             let spinner: UIActivityIndicatorView = UIActivityIndicatorView() as UIActivityIndicatorView
             spinner.activityIndicatorViewStyle = .WhiteLarge
@@ -48,11 +51,11 @@ class loginViewController: UIViewController {
             FIRAuth.auth()?.signInWithEmail(email!, password: password!){(user,error) in
                 spinner.stopAnimating()
                 if let error = error {
-                self.errorAlert("Opps!", message:"user doesn't exit!")
+                    self.errorAlert("Opps!", message:"user doesn't exit!")
                 }else{
-                self.sccuessAlert("Sccuess", message: "Login in")
+                    self.sccuessAlert("Sccuess", message: "Login in")
                     dispatch_async(dispatch_get_main_queue(),{()-> Void in
-                    let loginViewController = self.storyboard!.instantiateViewControllerWithIdentifier("Home")
+                        let loginViewController = self.storyboard!.instantiateViewControllerWithIdentifier("Home")
                         UIApplication.sharedApplication().keyWindow?.rootViewController = loginViewController
                     })
                 }
@@ -65,6 +68,6 @@ class loginViewController: UIViewController {
         
     }
     @IBAction func unwindToLoginScreen(segue: UIStoryboardSegue){ }
-
+    
 }
 
